@@ -2,35 +2,47 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Suport\Facades\Hash;
-use App\Models\User;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AdminSeeder extends Seeder
 {
-   private $permision =[
-    'role-list',
-    'role-create',
-    'role-edit',
-    'role-delete',
-   ];
+    /**
+     * List of applications to add.
+     */
+    private $permissions = [
+        'role-list',
+        'role-create',
+        'role-edit',
+        'role-delete'
+    ];
+
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        foreach($this->permision as $permission){
-            Permission::create(['name'=>$permission]);
-
+        foreach ($this->permissions as $permission) {
+            Permission::create(['name' => $permission]);
         }
-        $user=User::create([
+
+        // Create admin User and assign the role to him.
+        $user = User::create([
             'name'=>'Sinigur Valeria',
             'email'=>' admin@mail.ru',
             'password'=>Hash::make ('12345')
         ]);
-        $role=Role::create(['name'=>'Admin']);
-        $permission=Permission::pluck('id','id')->all();
-        $role->syncPermissions($permission);
+
+        $role = Role::create(['name' => 'Admin']);
+
+        $permissions = Permission::pluck('id', 'id')->all();
+
+        $role->syncPermissions($permissions);
+
         $user->assignRole([$role->id]);
     }
 }

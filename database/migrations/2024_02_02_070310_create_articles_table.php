@@ -18,12 +18,9 @@ return new class extends Migration
             $table->string('image');
             $table->longText('content');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')
-                    ->references('id')
-                    ->on('users');
-            $table->unsignedBigInteger('caregory_id');
-            $table->foreign('category_id')
-                    ->references('category_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
